@@ -1,11 +1,11 @@
 from flask import Flask, request
 
-import fields, utility
+import actions, utility
 
 app = Flask(__name__)
 
 import sched
-import datetime, time
+import datetime, time, json
 
 
 class PeriodicScheduler(object):
@@ -32,12 +32,10 @@ def doctor_name_guess():
     user_id = request.args.get('user_id')
     if task == 'get_doctors_by_name':
         name = request.args.get('doc_name')
-        fields.get_doctors_by_name(at, name)
+        response = actions.find_doctor_by_name(name)
+        return json.dumps(response)
 
 
 
 if __name__ == "__main__":
-    shed = PeriodicScheduler()
-    shed.setup(3000, refresh_token)
-    shed.run()
-    app.run(port=5008)
+    app.run(port=5010)

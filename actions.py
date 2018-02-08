@@ -11,13 +11,37 @@ def find_doctor_by_name(doc_name):
     result = fields.get_doctors_by_name(at, doc_name)
     count, doctors = result.get("response").get('count', 0), result.get("response").get('doctors', [])
     if count < 1:
-        pass
+        result = {
+            "option" : "no-result"
+        }
+    elif count == 1:
+        result = {
+            "option" : "matched",
+            "values" : {
+                "doctor-id" : "01",
+                "doctor-name" : "Amal Perera"
+            }
+        }
     elif 0 < count < 10:
-        pass
+        result = {
+            "option": "guess"
+        }
     else:
-        pass
+        result = {
+            "option": "vague"
+        }
 
-    return
+    return result
+
+def guess_doctor_by_name(doc_name):
+    # partial matches suggest
+    # No matches prompt to renter
+    at, rt = utility.get_token()
+    result = fields.get_doctors_by_name(at, doc_name)
+    count, doctors = result.get("response").get('count', 0), result.get("response").get('doctors', [])
+    # compose template
+
+    return result
 
 # step 1.1
 def know_more_doctor(doc_name, doc_id):
